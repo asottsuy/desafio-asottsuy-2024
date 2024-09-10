@@ -17,27 +17,27 @@ class RecintosZoo {
             { animal: "MACACO", tamanho: 1 },
             { animal: "GAZELA", tamanho: 2 },
             { animal: "HIPOPOTAMO", tamanho: 4 },
-        ]
-
+        ];
     }
 
     analisaRecintos(animal, quantidade) {
-        return validarAnimal(animal, this.listaAnimais);
-        return validarQuantidade(animal, quantidade);
-    }
+        const resultadoAnimal = validarAnimal(animal, this.listaAnimais);
+        if (resultadoAnimal.erro) {
+            return resultadoAnimal;
+        }
+
+
+        const resultadoQuantidade = validarQuantidade(quantidade);
+        if (resultadoQuantidade.erro) {
+            return resultadoQuantidade;
+        }
+
+
+        return {
+            erro: null,
+            recintosViaveis: true
+        };
+    };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export { RecintosZoo as RecintosZoo };

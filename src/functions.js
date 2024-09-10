@@ -15,7 +15,7 @@ export function validarAnimal(animal, listaAnimais) {
     };
 }
 
-export function validarQuantidade(animal, quantidade) {
+export function validarQuantidade(quantidade) {
     if (quantidade <= 0) {
         return {
             erro: "Quantidade inválida",
