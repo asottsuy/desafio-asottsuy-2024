@@ -1,4 +1,5 @@
-import { validarAnimal, validarQuantidade } from "./functions";
+import { imprimirRecintos } from "./functions.js";
+import { validarAnimal, validarQuantidade, validarRecinto } from "./functions-validacao.js";
 
 class RecintosZoo {
     constructor() {
@@ -19,25 +20,41 @@ class RecintosZoo {
             { animal: "HIPOPOTAMO", tamanho: 4 },
         ];
     }
-
+    //metodo analisar recintos
     analisaRecintos(animal, quantidade) {
+        const recintoEscolhido = imprimirRecintos(this.recintos);
+
+        //1 validacao
         const resultadoAnimal = validarAnimal(animal, this.listaAnimais);
-        if (resultadoAnimal.erro) {
-            return resultadoAnimal;
-        }
+        if (resultadoAnimal.erro) { return resultadoAnimal; }
 
-
+        //2 validacao
         const resultadoQuantidade = validarQuantidade(quantidade);
-        if (resultadoQuantidade.erro) {
-            return resultadoQuantidade;
-        }
+        if (resultadoQuantidade.erro) { return resultadoQuantidade; }
 
+        //3 validacao
+        const resultadoRecinto = validarRecinto(animal, quantidade);
+        if (resultadoRecinto.erro) { return resultadoRecinto; }
 
-        return {
-            erro: null,
-            recintosViaveis: true
-        };
+        return { erro: null, recintosViaveis: true };
     };
 }
 
+const zoo = new RecintosZoo();
+const animal1 = zoo.analisaRecintos("MACACO", 3);
+console.log(animal1);
+
+
 export { RecintosZoo as RecintosZoo };
+
+
+//1) comecar pela logica dos testes
+//2) depois de concluir os testes preciso criar as regras para o programa indicar os recintos possiveis
+//3) organizar o programa.
+//4) testar tudo denovo para ver se nao ha erros
+//5) criar repositorio no github e fazer o push
+
+//no momento que o animal e a quantidade forem inseridos, deve aparecer no console todos os recintos possiveis para o animal escolhido.
+//a lista deve indicar o espaco livre que restaria apos a inclusao do animal
+//entao, o programa deve apenas simular a cada animal inserido, qual recinto deve ser alocado. 
+//Indicando qual recinto e possivel coloca-lo
