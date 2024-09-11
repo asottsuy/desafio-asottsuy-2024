@@ -75,7 +75,6 @@ Saída
    "Recinto 3 (espaço livre: 2 total: 7)"]
 }
 ```
-
 Entrada para um caso inválido
 ```js
 "UNICORNIO", 1

@@ -30,6 +30,7 @@ export function validarQuantidade(quantidade) {
 }
 
 
+
 export function retornarErroRecinto() { //funcao para retornar erro dos recintos nao viaveis
     return {
         erro: "Não há recinto viável",
@@ -39,22 +40,22 @@ export function retornarErroRecinto() { //funcao para retornar erro dos recintos
 
 export function validarRecinto(animal, quantidade) {
     //limitar a quantidade de animais inseridos
-    if (animal == "LEAO" && quantidade > 3) {
+    if (animal === "LEAO" && quantidade > 3) {
         return retornarErroRecinto();
     }
-    if (animal == "LEOPARDO" && quantidade > 1) {
+    if (animal === "LEOPARDO" && quantidade >= 1) {
         return retornarErroRecinto();
     }
-    if (animal == "CROCODILO" && quantidade > 2) {
+    if (animal === "CROCODILO" && quantidade > 2) {
         return retornarErroRecinto();
     }
-    if (animal == "MACACO" && quantidade > 9) {
+    if (animal === "MACACO" && quantidade > 9) {
         return retornarErroRecinto();
     }
-    if (animal == "GAZELA" && quantidade > 3) {
+    if (animal === "GAZELA" && quantidade > 3) {
         return retornarErroRecinto();
     }
-    if (animal == "HIPOPOTAMO" && quantidade > 1) {
+    if (animal === "HIPOPOTAMO" && quantidade > 1) {
         return retornarErroRecinto();
     }
     return {
@@ -62,3 +63,5 @@ export function validarRecinto(animal, quantidade) {
         recintosViaveis: true,
     };
 }
+
+
