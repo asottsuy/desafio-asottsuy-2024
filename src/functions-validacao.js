@@ -49,7 +49,7 @@ export function validarRecinto(animal, quantidade) {
     if (animal === "CROCODILO" && quantidade > 2) {
         return retornarErroRecinto();
     }
-    if (animal === "MACACO" && quantidade > 9) {
+    if (animal === "MACACO" && quantidade > 7) {
         return retornarErroRecinto();
     }
     if (animal === "GAZELA" && quantidade > 3) {

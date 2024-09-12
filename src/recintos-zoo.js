@@ -1,5 +1,5 @@
 import { imprimirRecintosViaveis } from "./functions.js";
-import { validarAnimal, validarQuantidade, validarRecinto } from "./functions-validacao.js";
+import { validarAnimal, validarQuantidade, validarRecinto, retornarErroRecinto } from "./functions-validacao.js";
 
 class RecintosZoo {
     constructor() {
@@ -10,6 +10,8 @@ class RecintosZoo {
             { nome: 'rio', tamanho_total: 8, animais_existentes: {} },
             { nome: 'savana', tamanho_total: 9, animais_existentes: { LEAO: 1 } },
         ];
+
+
 
         this.listaAnimais = [
             { animal: "LEAO", tamanho: 3 },
@@ -35,19 +37,18 @@ class RecintosZoo {
         const resultadoRecinto = validarRecinto(animal, quantidade);
         if (resultadoRecinto.erro) { return resultadoRecinto; }
 
-        //4 validacao
-
-        imprimirRecintosViaveis(animal, quantidade, this.recintos);
-        return { erro: null, recintosViaveis: true };
-
-        
+        //4 validacao e 5
+        let recintosViaveis = imprimirRecintosViaveis(animal, quantidade, this.recintos, this.listaAnimais);
+        return { erro: false, recintosViaveis: recintosViaveis.recintosViaveis };
     };
 
 }
 
 const zoo = new RecintosZoo();
-const animal1 = zoo.analisaRecintos("LEAO", 1);
-console.log(animal1);
+//console.log(zoo.recintos)
+const animal1 = zoo.analisaRecintos("MACACO", 2);
+console.log(animal1.recintosViaveis);
+
 
 export { RecintosZoo as RecintosZoo };
 

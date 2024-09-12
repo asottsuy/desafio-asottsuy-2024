@@ -14,15 +14,58 @@ logica para imprimir recintos viaveis para os animais inseridos:
 */
 
 
-export function imprimirRecintosViaveis(animal, quantidade, recintos) {
-    let recintosViaveis = [];
-    recintosViaveis = regraAnimalCarnivoro(animal);
-    return recintosViaveis;
-    //tamanhoDoAnimal(animal, quantidade, recintos);
+export function imprimirRecintosViaveis(animal, quantidade, recintos, listaAnimais) {
+    if (animal === "LEAO" || animal === "LEOPARDO" || animal === "CROCODILO") {
+        let recintosViaveis = animalCarnivoro(animal, recintos);
+        let tamanhoTotalDoAnimal = getTamanhoDoAnimal(animal, quantidade, listaAnimais);
+
+        recintosViaveis = recintosViaveis.map((recinto, index) => {
+            let tamanhoTotal = recinto.tamanho_total;
+            let espaçoLivre = tamanhoTotal - tamanhoTotalDoAnimal;
+            return `Recinto ${recintos.indexOf(recinto) + 1} (espaço livre: ${espaçoLivre} total: ${tamanhoTotal})`;
+        });
+        return {
+            erro: false,
+            recintosViaveis: recintosViaveis,
+            tamanhoRecintosViaveis: recintosViaveis.length
+        };
+
+
+
+    } else if (animal === "MACACO") {
+        let recintosViaveis = regraMacacos(animal, quantidade, recintos); //so podem ser alocado caso haja mais de 1 macaco ou animais nao carnivoros
+        let tamanhoTotalDoAnimal = getTamanhoDoAnimal(animal, quantidade, listaAnimais);
+
+        recintosViaveis = recintosViaveis.map((recinto, index) => { //cria um novo array retornando a string no formato pedido
+            let tamanhoTotal = recinto.tamanho_total;
+            let espacoLivreRecinto = regraMaisDeUmAnimalDiferente(animal, recinto);
+            let espacoOcupado = calcularEspacoOcupado(recinto, listaAnimais);
+            let espaçoLivre = tamanhoTotal - tamanhoTotalDoAnimal - espacoOcupado - espacoLivreRecinto;
+            console.log(`Recinto: ${recinto.nome}, Tamanho Total: ${tamanhoTotal}, Espaço Ocupado: ${espacoOcupado}, Tamanho Total do Animal: ${tamanhoTotalDoAnimal}, Espaço Livre: ${espaçoLivre}`);
+            return `Recinto ${recintos.indexOf(recinto) + 1} (espaço livre: ${espaçoLivre} total: ${tamanhoTotal})`;
+        });
+        return {
+            erro: false,
+            recintosViaveis: recintosViaveis,
+            tamanhoRecintosViaveis: recintosViaveis.length
+        };
+
+    } else if (animal === "GAZELA") {
+        let recintosViaveis = regraGazela(); //so pode ser alocado em recintos sem animais carnivoros
+        recintosViaveis += regraMaisDeUmAnimalDiferente();// caso alocado na savana com os macacos deve considerar 1 espaco ocupado a mais
+        return {
+            recintosViaveis
+        };
+
+    } else if (animal === "HIPOPOTAMO") { //rio ou savana e rio
+        let recintosViaveis = regraHipopotamo();
+        return {
+            recintosViaveis
+        };
+    }
 }
 
-
-export function tamanhoDoAnimal(animal, quantidade, recintos) { //retorna o espaco que o animal ocuparia
+export function getTamanhoDoAnimal(animal, quantidade, listaAnimais) { //retorna o espaco que o animal ocuparia
     //encontrando o tamanho do animal
     let tamanhoDoAnimal = listaAnimais.find(a => a.animal === animal).tamanho;
     //saber o tamanho total dos animais
@@ -30,11 +73,18 @@ export function tamanhoDoAnimal(animal, quantidade, recintos) { //retorna o espa
     return espacoOcupado;
 }
 
-export function ajeitarIndiceRecintos(recintos) {
-    const indice = 1;
-    let recintoIndice = recintos[indice - 1];
-    return recintoIndice;
+export function calcularEspacoOcupado(recintos, listaAnimais) {
+    let espacoOcupado = 0;
+
+    for (let animal in recintos.animais_existentes) {
+        let quantidade = recintos.animais_existentes[animal];
+        let tamanhoAnimal = listaAnimais.find(a => a.animal === animal).tamanho;
+        espacoOcupado += quantidade * tamanhoAnimal;
+    }
+    return espacoOcupado;
 }
+
+
 
 
 
@@ -42,56 +92,45 @@ export function ajeitarIndiceRecintos(recintos) {
 //para deixar a saida certinho, posso buscar os valores do dicionarios e atribuir para uma variavel
 //depois monto um novo array do formato que o desafio pede atribuindo no lugar dos valores as variaveis
 
-
-
-
-
-
-
-
 //============================================REGRAS============================================
 
-export function regraAnimalCarnivoro(animal, recintos) { //devem habitar somente com a mesma especie
-    ajeitarIndiceRecintos(recintos);
-
+export function animalCarnivoro(animal, recintos) { //devem habitar somente com a mesma especie
+    let recintosViaveis = [];
     if (animal === "LEAO") {
         //pode ser alocado em bioma de savana, logo resta, savana(4).
-        recintosViaveis.push(recintos[5]); // vai adicionar na lista o recinto de indice 4
-    }
-    if (animal === "LEOPARDO") {
+        recintosViaveis.push(recintos[4]); // vai adicionar na lista o recinto de indice 4
+
+    } else if (animal === "LEOPARDO") {
         return retornarErroRecinto();
-    }
-    if (animal === "CROCODILO") {
-        recintosViaveis.push(recintos[4])
-    }
-    return {
-        erro: false,
-        recintosViaveis: recintosViaveis,
-        recintosViaveis: recintosViaveis.length,
-    }
 
-}
-
-export function regraHipopotamo(animal) {
-    if (animal === "HIPOPOTAMO") {
-        //pode ser alocado somente na floresta ou rio (caso sozinho) ou
-        //na savana e savana e rio
+    } else if (animal === "CROCODILO") {
+        recintosViaveis.push(recintos[3]);
     }
-    //
-}
-
-export function regraMacacos(animal) { //macacos se sentem confortaveis em recintos com outros animais
-    if (animal === "MACACO") {
-        //deve se alocado em 2 ou mais obrigatoriamente
-        //pode ser alocado na savana, floresta, savana e rio, e rio.
-    }
-    //
-}
-
-export function regraAnimaisMesmoRecinto() {//quando ha mais de uma especie dentro do mesmo recinto e preciso considerar 1 espaco extra
-
+    return recintosViaveis;
 }
 
 
+export function regraMaisDeUmAnimalDiferente(animal, recinto) {
+    //preciso criar uma logica onde quando um animal diferente coexista no mesmo recinto que outro, adicione um espaco a menos no espaco livre.
+    //1) identificar se vai ter masi de 1 animal
+    //2) fazer o ajuste subtraindo 1 do espaco livre
+    for (let tipoAnimal in recinto.animais_existentes) {
+        if (tipoAnimal !== animal) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
-
+export function regraMacacos(animal, quantidade, recintos) {
+    //so podem ser alocado caso haja mais de 1 macaco ou animais nao carnivoros
+    let recintosViaveis = [];
+    if (animal === "MACACO" && quantidade === 1) {
+        //so pode ser inserido na savana1
+        recintosViaveis.push(recintos[0]);
+    } else {
+        recintosViaveis.push(recintos[0]);
+        recintosViaveis.push(recintos[1]);
+        recintosViaveis.push(recintos[2]);
+    } return recintosViaveis;
+}
