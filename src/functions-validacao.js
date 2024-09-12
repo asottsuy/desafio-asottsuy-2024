@@ -1,6 +1,6 @@
+//============================================FUNCOES DA 1,2 E 3 VALIDACAO.========================================
 
-export function validarAnimal(animal, listaAnimais) {
-    animal = animal.toUpperCase();
+export function validarAnimal(animal, listaAnimais) { // 1) 1 VALIDACAO ('Deve rejeitar animal inválido',)
     //verificar se o animal inserido esta na lista de animais
     let animalValido = listaAnimais.some(a => a.animal === animal);
 
@@ -16,8 +16,8 @@ export function validarAnimal(animal, listaAnimais) {
     };
 }
 
-export function validarQuantidade(quantidade) {
-    //a quantidade nao pode ser 0
+export function validarQuantidade(quantidade) { // 2) 2 VALIDACAO ('Deve rejeitar quantidade inválida')
+    //a quantidade nao pode ser 0 ou menor
     if (quantidade <= 0) {
         return {
             erro: "Quantidade inválida",
@@ -29,16 +29,7 @@ export function validarQuantidade(quantidade) {
     };
 }
 
-
-
-export function retornarErroRecinto() { //funcao para retornar erro dos recintos nao viaveis
-    return {
-        erro: "Não há recinto viável",
-        recintosViaveis: false,
-    };
-}
-
-export function validarRecinto(animal, quantidade) {
+export function validarRecinto(animal, quantidade) {// 3) 3 VALIDACAO ('Não deve encontrar recintos para 10 macacos') 
     //limitar a quantidade de animais inseridos
     if (animal === "LEAO" && quantidade > 3) {
         return retornarErroRecinto();
@@ -64,4 +55,10 @@ export function validarRecinto(animal, quantidade) {
     };
 }
 
-
+// ===================== FUNCAO DE ERRO ==================
+export function retornarErroRecinto() {
+    return {
+        erro: "Não há recinto viável",
+        recintosViaveis: false,
+    };
+}

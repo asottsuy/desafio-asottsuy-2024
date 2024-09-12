@@ -11,8 +11,6 @@ class RecintosZoo {
             { nome: 'savana', tamanho_total: 9, animais_existentes: { LEAO: 1 } },
         ];
 
-
-
         this.listaAnimais = [
             { animal: "LEAO", tamanho: 3 },
             { animal: "LEOPARDO", tamanho: 2 },
@@ -23,43 +21,37 @@ class RecintosZoo {
         ];
     }
 
-    //metodo analisar recintos
     analisaRecintos(animal, quantidade) {
         //1 validacao
         const resultadoAnimal = validarAnimal(animal, this.listaAnimais);
-        if (resultadoAnimal.erro) { return resultadoAnimal; }
+        if (resultadoAnimal.erro) {
+            console.log(resultadoAnimal.erro);
+            return resultadoAnimal;
+        }
 
         //2 validacao
         const resultadoQuantidade = validarQuantidade(quantidade);
-        if (resultadoQuantidade.erro) { return resultadoQuantidade; }
+        if (resultadoQuantidade.erro) {
+            console.log(resultadoQuantidade.erro);
+            return resultadoQuantidade;
+        }
 
         //3 validacao
         const resultadoRecinto = validarRecinto(animal, quantidade);
-        if (resultadoRecinto.erro) { return resultadoRecinto; }
+        if (resultadoRecinto.erro) {
+            console.log(resultadoRecinto.erro);
+            return resultadoRecinto;
+        }
 
-        //4 validacao e 5
+        //4 e 5 validacao
         let recintosViaveis = imprimirRecintosViaveis(animal, quantidade, this.recintos, this.listaAnimais);
         return { erro: false, recintosViaveis: recintosViaveis.recintosViaveis };
     };
-
 }
 
-const zoo = new RecintosZoo();
-//console.log(zoo.recintos)
-const animal1 = zoo.analisaRecintos("MACACO", 2);
-console.log(animal1.recintosViaveis);
+const zoo = new RecintosZoo(); //instanciando RecintosZoo() em zoo
+const animal1 = zoo.analisaRecintos("GAZELA", 1); //chamando o metodo analisarecintos() passando os parametros
+console.log(animal1.recintosViaveis); //printo no console a saida do metodo anterior
 
 
 export { RecintosZoo as RecintosZoo };
-
-//1) comecar pela logica dos testes
-//2) depois de concluir os testes preciso criar as regras para o programa indicar os recintos possiveis
-//3) organizar o programa.
-//4) testar tudo denovo para ver se nao ha erros
-//5) criar repositorio no github e fazer o push
-
-
-//no momento que o animal e a quantidade forem inseridos, deve aparecer no console todos os recintos possiveis para o animal escolhido.
-//a lista deve indicar o espaco livre que restaria apos a inclusao do animal
-//entao, o programa deve apenas simular a cada animal inserido, qual recinto deve ser alocado.
-//Indicando qual recinto e possivel coloca-lo
